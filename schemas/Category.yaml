@@ -1,0 +1,19 @@
+Category:
+  type: object
+  properties:
+    id:
+      type: integer
+      description: Unikalny identyfikator kategorii
+    name:
+      type: string
+      description: Nazwa kategorii (np. Food, Transport)
+    type:
+      type: string
+      description: Typ kategorii (Essential lub Discretionary)
+      enum:
+        - Essential
+        - Discretionary
+  required:
+    - id
+    - name
+    - type
