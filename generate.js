@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-function generateCategory() {
+export function generateCategory() {
   const categories = [
     { id: 1, name: 'Food', type: 'Essential' },
     { id: 2, name: 'Transport', type: 'Essential' },
@@ -10,13 +10,18 @@ function generateCategory() {
   
   return faker.helpers.arrayElement(categories);
 }
-function generatePaymentMethod() {
+
+function generateCardType() {
+  const cardTypes = ['Visa', 'MasterCard', 'American Express'];
+  return faker.helpers.arrayElement(cardTypes);
+}
+export function generatePaymentMethod() {
   const paymentMethods = [
     {
       type: 'Card',
       details: {
-        cardType: faker.finance.creditCardType(),
-        lastFourDigits: faker.finance.mask(4, true)
+        cardType: generateCardType(),
+        lastFourDigits: faker.finance.creditCardNumber().slice(-4)
       }
     },
     {
@@ -25,7 +30,7 @@ function generatePaymentMethod() {
     {
       type: 'Bank Transfer',
       details: {
-        accountNumber: faker.finance.iban()
+        accountNumber: faker.finance.accountNumber()
       }
     }
   ];
@@ -36,15 +41,15 @@ function generatePaymentMethod() {
 export const generateExpense = (id) => {
   return {
     id: id,
-    userName: faker.name.fullName(),
+    userName: faker.person.fullName(),
     description: faker.commerce.productName(),
     image: faker.image.avatar(),
     category: generateCategory(),
     amount: {
       value: parseFloat(faker.finance.amount(10, 500, 2)),
       currency: {
-        code: 'PLN',
-        symbol: 'zł'
+        code: faker.finance.currencyCode(),
+        symbol: faker.finance.currencySymbol()
       }
     },
     transaction: {

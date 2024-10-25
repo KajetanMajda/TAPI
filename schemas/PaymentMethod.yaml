@@ -1,0 +1,23 @@
+PaymentMethod:
+  type: object
+  properties:
+    type:
+      type: string
+      description: Typ metody płatności (np. Card, Cash, Bank Transfer)
+      enum:
+        - Card
+        - Cash
+        - Bank Transfer
+    details:
+      type: object
+      description: Szczegóły metody płatności, zależne od typu
+      properties:
+        cardType:
+          type: string
+          description: Typ karty (np. Visa, MasterCard)
+        lastFourDigits:
+          type: string
+          description: Ostatnie cztery cyfry karty
+        accountNumber:
+          type: string
+          description: Numer konta dla przelewów bankowych

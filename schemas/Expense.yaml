@@ -1,0 +1,51 @@
+Expense:
+  type: object
+  properties:
+    id:
+      type: integer
+      description: Unikalny identyfikator wydatku
+    userName:
+      type: string
+      description: Imię i nazwisko użytkownika
+    description:
+      type: string
+      description: Opis wydatku
+    image:
+      type: string
+      description: URL do obrazu
+    category:
+      $ref: '#/components/schemas/Category'
+    amount:
+      type: object
+      properties:
+        value:
+          type: number
+          format: float
+          description: Wartość wydatku
+        currency:
+          type: object
+          properties:
+            code:
+              type: string
+              example: PLN
+              description: Kod waluty
+            symbol:
+              type: string
+              example: zł
+              description: Symbol waluty
+    transaction:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+          description: Data transakcji
+        paymentMethod:
+          $ref: '#/components/schemas/PaymentMethod'
+  required:
+    - id
+    - userName
+    - description
+    - category
+    - amount
+    - transaction
