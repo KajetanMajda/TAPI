@@ -17,6 +17,19 @@ const mdlwrd = (req, res, next) => {
     } 
     next();
 }
+
+const requestCount = {};
+
+const trackRequestCount = (req, res, next) => {
+    const ip = req.ip;
+    if (!requestCount[ip]) {
+        requestCount[ip] = 0;
+    }
+    requestCount[ip] += 1;
+    res.setHeader('X-Request-Count', requestCount[ip]);
+
+    next();
+};
 //dodac 2 headery 
 
 const swaggerOptions = {
@@ -98,6 +111,7 @@ const swaggerOptions = {
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use(mdlwrd);
+app.use(trackRequestCount);
 
 // --- Expenses ---
 /**
@@ -172,11 +186,6 @@ app.get("/expenses", (req, res) => {
  *       404:
  *         description: Wydatek nie znaleziony
  */
-// app.get("/expenses/:id", (req, res) => {
-//     const expense = expenses.find(e => e.id === Number(req.params.id));
-//     expense ? res.json(expense) : res.status(404).json({ error: "Expense not found" });
-// });
-
 app.get("/expenses/:id", (req, res) => {
     const expense = expenses.find(e => e.id === Number(req.params.id));
 
