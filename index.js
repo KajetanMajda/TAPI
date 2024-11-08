@@ -17,12 +17,13 @@ const mdlwrd = (req, res, next) => {
     } 
     next();
 }
+//dodac 2 headery 
 
 const swaggerOptions = {
     swaggerDefinition: {
         openapi: "3.0.0",
         info: {
-            title: "Expense API",
+            title: "TAPI API",
             version: "1.0.0",
             description: "API do zarządzania wydatkami, kategoriami oraz metodami płatności"
         },
@@ -146,6 +147,7 @@ app.get("/expenses", (req, res) => {
             { rel: "create", method: "POST", href: "http://localhost:3000/expenses" }
         ]
     });
+    //dodac by bylo lacznie po  3 statusu do kazdego zapytania(do tych co sa senesowne)
 });
 
 /**
