@@ -27,10 +27,10 @@ const trackRequestCount = (req, res, next) => {
     }
     requestCount[ip] += 1;
     res.setHeader('X-Request-Count', requestCount[ip]);
+    res.setHeader('X-Application-Author', 'Kajetan');
 
     next();
 };
-//dodac 2 headery 
 
 const swaggerOptions = {
     swaggerDefinition: {
@@ -138,6 +138,10 @@ app.use(trackRequestCount);
  *                 $ref: '#/components/schemas/Expense'
  */
 app.get("/expenses", (req, res) => {
+    if (expenses.length === 0) {
+        return res.status(404).json({ message: "Exprenses not found", data: [] });
+    }
+
     const expensesWithLinks = expenses.map(expense => ({
         ...expense,
         category: {
@@ -161,7 +165,6 @@ app.get("/expenses", (req, res) => {
             { rel: "create", method: "POST", href: "http://localhost:3000/expenses" }
         ]
     });
-    //dodac by bylo lacznie po  3 statusu do kazdego zapytania(do tych co sa senesowne)
 });
 
 /**
@@ -187,7 +190,13 @@ app.get("/expenses", (req, res) => {
  *         description: Wydatek nie znaleziony
  */
 app.get("/expenses/:id", (req, res) => {
-    const expense = expenses.find(e => e.id === Number(req.params.id));
+    const id = Number(req.params.id);
+
+    if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid ID format" });
+    }
+
+    const expense = expenses.find(e => e.id === id);
 
     if (expense) {
         res.status(200).json({
@@ -250,8 +259,13 @@ app.post("/expenses", (req, res) => {
  *         description: Wydatek nie znaleziony
  */
 app.put("/expenses/:id", (req, res) => {
-    const expenseIndex = expenses.findIndex(e => e.id === Number(req.params.id));
-    expenseIndex !== -1 ? res.json(Object.assign(expenses[expenseIndex], req.body)) : res.status(404).json({ error: "Expense not found" });
+    const id = Number(req.params.id);
+
+    if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid ID format" });
+    }
+    const expenseIndex = expenses.findIndex(e => e.id === id);
+    expenseIndex !== -1 ? res.status(200).json(Object.assign(expenses[expenseIndex], req.body)) : res.status(404).json({ error: "Expense not found" });
 });
 
 /**
@@ -278,8 +292,13 @@ app.put("/expenses/:id", (req, res) => {
  *         description: Wydatek nie znaleziony
  */
 app.patch("/expenses/:id", (req, res) => {
-    const expense = expenses.find(e => e.id === Number(req.params.id));
-    expense ? res.json(Object.assign(expense, req.body)) : res.status(404).json({ error: "Expense not found" });
+    const id = Number(req.params.id);
+
+    if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid ID format" });
+    }
+    const expense = expenses.find(e => e.id === id);
+    expense ? res.status(200).json(Object.assign(expense, req.body)) : res.status(404).json({ error: "Expense not found" });
 });
 
 /**
@@ -301,8 +320,13 @@ app.patch("/expenses/:id", (req, res) => {
  *         description: Wydatek nie znaleziony
  */
 app.delete("/expenses/:id", (req, res) => {
-    const expenseIndex = expenses.findIndex(e => e.id === Number(req.params.id));
-    expenseIndex !== -1 ? res.json(expenses.splice(expenseIndex, 1)[0]) : res.status(404).json({ error: "Expense not found" });
+    const id = Number(req.params.id);
+
+    if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid ID format" });
+    }
+    const expenseIndex = expenses.findIndex(e => e.id === id);
+    expenseIndex !== -1 ? res.status(200).json(expenses.splice(expenseIndex, 1)[0]) : res.status(404).json({ error: "Expense not found" });
 });
 
 // --- Categories ---
@@ -330,6 +354,10 @@ app.delete("/expenses/:id", (req, res) => {
  *                 $ref: '#/components/schemas/Category'
  */
 app.get("/categories", (req, res) => {
+    if (categories.length === 0) {
+        return res.status(404).json({ message: "Categories not found", data: [] });
+    }
+
     const categoriesWithLinks = categories.map(category => ({
         ...category,
         links: [
@@ -369,8 +397,11 @@ app.get("/categories", (req, res) => {
  *         description: Kategoria nie znaleziona
  */
 app.get("/categories/:id", (req, res) => {
-    const category = categories.find(c => c.id === Number(req.params.id));
-
+    const id = Number(req.params.id);
+    if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid ID format" });
+    }
+    const category = categories.find(c => c.id === id);
     if (category) {
         res.status(200).json({
             ...category,
@@ -429,8 +460,12 @@ app.post("/categories", (req, res) => {
  *         description: Kategoria nie znaleziona
  */
 app.put("/categories/:id", (req, res) => {
-    const categoryIndex = categories.findIndex(c => c.id === Number(req.params.id));
-    categoryIndex !== -1 ? res.json(Object.assign(categories[categoryIndex], req.body)) : res.status(404).json({ error: "Category not found" });
+    const id = Number(req.params.id);
+    if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid ID format" });
+    }
+    const categoryIndex = categories.findIndex(c => c.id === id);
+    categoryIndex !== -1 ? res.status(200).json(Object.assign(categories[categoryIndex], req.body)) : res.status(404).json({ error: "Category not found" });
 });
 
 /**
@@ -457,8 +492,12 @@ app.put("/categories/:id", (req, res) => {
  *         description: Kategoria nie znaleziona
  */
 app.patch("/categories/:id", (req, res) => {
-    const category = categories.find(c => c.id === Number(req.params.id));
-    category ? res.json(Object.assign(category, req.body)) : res.status(404).json({ error: "Category not found" });
+    const id = Number(req.params.id);
+    if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid ID format" });
+    }
+    const category = categories.find(c => c.id === id);
+    category ? res.status(200).json(Object.assign(category, req.body)) : res.status(404).json({ error: "Category not found" });
 });
 
 /**
@@ -480,8 +519,12 @@ app.patch("/categories/:id", (req, res) => {
  *         description: Kategoria nie znaleziona
  */
 app.delete("/categories/:id", (req, res) => {
-    const categoryIndex = categories.findIndex(c => c.id === Number(req.params.id));
-    categoryIndex !== -1 ? res.json(categories.splice(categoryIndex, 1)[0]) : res.status(404).json({ error: "Category not found" });
+    const id = Number(req.params.id);
+    if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid ID format" });
+    }
+    const categoryIndex = categories.findIndex(c => c.id === id);
+    categoryIndex !== -1 ? res.status(200).json(categories.splice(categoryIndex, 1)[0]) : res.status(404).json({ error: "Category not found" });
 });
 
 // --- Payment Methods ---
@@ -509,6 +552,10 @@ app.delete("/categories/:id", (req, res) => {
  *                 $ref: '#/components/schemas/PaymentMethod'
  */
 app.get("/paymentMethods", (req, res) => {
+    if (paymentMethods.length === 0) {
+        return res.status(404).json({ message: "Payment Methods not found", data: [] });
+    }
+
     const paymentMethodsWithLinks = paymentMethods.map(paymentMethod => ({
         ...paymentMethod,
         links: [
@@ -548,7 +595,11 @@ app.get("/paymentMethods", (req, res) => {
  *         description: Metoda płatności nie znaleziona
  */
 app.get("/paymentMethods/:id", (req, res) => {
-    const paymentMethod = paymentMethods.find(p => p.id === Number(req.params.id));
+    const id = Number(req.params.id);
+    if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid ID format" });
+    }
+    const paymentMethod = paymentMethods.find(p => p.id === id);
 
     if (paymentMethod) {
         res.status(200).json({
@@ -608,8 +659,12 @@ app.post("/paymentMethods", (req, res) => {
  *         description: Metoda płatności nie znaleziona
  */
 app.put("/paymentMethods/:id", (req, res) => {
-    const paymentMethodIndex = paymentMethods.findIndex(p => p.id === Number(req.params.id));
-    paymentMethodIndex !== -1 ? res.json(Object.assign(paymentMethods[paymentMethodIndex], req.body)) : res.status(404).json({ error: "Payment Method not found" });
+    const id = Number(req.params.id);
+    if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid ID format" });
+    }
+    const paymentMethodIndex = paymentMethods.findIndex(p => p.id === id);
+    paymentMethodIndex !== -1 ? res.status(200).json(Object.assign(paymentMethods[paymentMethodIndex], req.body)) : res.status(404).json({ error: "Payment Method not found" });
 });
 
 /**
@@ -636,8 +691,12 @@ app.put("/paymentMethods/:id", (req, res) => {
  *         description: Metoda płatności nie znaleziona
  */
 app.patch("/paymentMethods/:id", (req, res) => {
-    const paymentMethod = paymentMethods.find(p => p.id === Number(req.params.id));
-    paymentMethod ? res.json(Object.assign(paymentMethod, req.body)) : res.status(404).json({ error: "Payment Method not found" });
+    const id = Number(req.params.id);
+    if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid ID format" });
+    }
+    const paymentMethod = paymentMethods.find(p => p.id === id);
+    paymentMethod ? res.status(200).json(Object.assign(paymentMethod, req.body)) : res.status(404).json({ error: "Payment Method not found" });
 });
 
 /**
@@ -659,8 +718,12 @@ app.patch("/paymentMethods/:id", (req, res) => {
  *         description: Metoda płatności nie znaleziona
  */
 app.delete("/paymentMethods/:id", (req, res) => {
-    const paymentMethodIndex = paymentMethods.findIndex(p => p.id === Number(req.params.id));
-    paymentMethodIndex !== -1 ? res.json(paymentMethods.splice(paymentMethodIndex, 1)[0]) : res.status(404).json({ error: "Payment Method not found" });
+    const id = Number(req.params.id);
+    if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid ID format" });
+    }
+    const paymentMethodIndex = paymentMethods.findIndex(p => p.id === id);
+    paymentMethodIndex !== -1 ? res.status(200).json(paymentMethods.splice(paymentMethodIndex, 1)[0]) : res.status(404).json({ error: "Payment Method not found" });
 });
 
 app.listen(3000, () => console.log("Server is running on port 3000"));
