@@ -1,0 +1,57 @@
+type Query {
+  categories: [Category]
+  expenses: [Expense]
+}
+
+type Category {
+  id: Int!
+  name: String! 
+  type: CategoryType!
+}
+
+enum CategoryType {
+  Essential
+  Discretionary
+}
+
+type Expense {
+  id: Int! 
+  userName: String!
+  description: String!
+  image: String 
+  category: Category! 
+  amount: ExpenseAmount! 
+  transaction: Transaction! 
+}
+
+type ExpenseAmount {
+  value: Float! 
+  currency: Currency! 
+}
+
+type Currency {
+  code: String!
+  symbol: String! 
+}
+
+type Transaction {
+  date: String! 
+  paymentMethod: PaymentMethod! 
+}
+
+type PaymentMethod {
+  type: PaymentMethodType! 
+  details: PaymentDetails 
+}
+
+enum PaymentMethodType {
+  Card
+  Cash
+  BankTransfer
+}
+
+type PaymentDetails {
+  cardType: String 
+  lastFourDigits: String 
+  accountNumber: String 
+}
