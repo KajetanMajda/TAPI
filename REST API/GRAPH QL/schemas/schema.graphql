@@ -1,11 +1,17 @@
+scalar Date
+
 type Query {
   categories: [Category]
-  expenses: [Expense]
+  expenses(filter: ExpenseFilter, pagination: PaginationInput, sort: SortInput): [Expense]
+}
+
+type Mutation {
+  createExpense(input: ExpenseInput!): Expense
 }
 
 type Category {
   id: Int!
-  name: String! 
+  name: String!
   type: CategoryType!
 }
 
@@ -15,33 +21,33 @@ enum CategoryType {
 }
 
 type Expense {
-  id: Int! 
+  id: Int!
   userName: String!
   description: String!
-  image: String 
-  category: Category! 
-  amount: ExpenseAmount! 
-  transaction: Transaction! 
+  image: String
+  category: Category!
+  amount: ExpenseAmount!
+  transaction: Transaction!
 }
 
 type ExpenseAmount {
-  value: Float! 
-  currency: Currency! 
+  value: Float!
+  currency: Currency!
 }
 
 type Currency {
   code: String!
-  symbol: String! 
+  symbol: String!
 }
 
 type Transaction {
-  date: String! 
-  paymentMethod: PaymentMethod! 
+  date: Date!
+  paymentMethod: PaymentMethod!
 }
 
 type PaymentMethod {
-  type: PaymentMethodType! 
-  details: PaymentDetails 
+  type: PaymentMethodType!
+  details: PaymentDetails
 }
 
 enum PaymentMethodType {
@@ -51,7 +57,56 @@ enum PaymentMethodType {
 }
 
 type PaymentDetails {
-  cardType: String 
-  lastFourDigits: String 
-  accountNumber: String 
+  cardType: String
+  lastFourDigits: String
+  accountNumber: String
+}
+
+input ExpenseFilter {
+  userName: StringFilter
+  amount: FloatFilter
+}
+
+input StringFilter {
+  eq: String
+  contains: String
+  neq: String
+  notContains: String
+}
+
+input FloatFilter {
+  eq: Float
+  gt: Float
+  gte: Float
+  lt: Float
+  lte: Float
+}
+
+input PaginationInput {
+  page: Int!
+  pageSize: Int!
+}
+
+input SortInput {
+  field: String!
+  order: SortOrder!
+}
+
+enum SortOrder {
+  ASC
+  DESC
+}
+
+input ExpenseInput {
+  userName: String!
+  description: String!
+  image: String
+  categoryId: Int!
+  amount: Float!
+  currencyCode: String!
+  transactionDate: Date!
+  paymentMethodType: PaymentMethodType!
+  cardType: String
+  lastFourDigits: String
+  accountNumber: String
 }
