@@ -8,7 +8,7 @@ import {readFileSync} from 'fs';
 const app = express();
 const typeDefs = readFileSync('./GRAPH QL/schemas/schema.graphql', {encoding: "utf8"});
 
-const apolloServer = new ApolloServer({typeDefs, resolvers});
+const apolloServer = new ApolloServer({typeDefs, resolvers, introspection: true, playground: true,});
 await apolloServer.start();
 
 app.use('/graphsql', cors(), express.json(), expressMiddleware(apolloServer))
