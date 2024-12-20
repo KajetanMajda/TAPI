@@ -33,7 +33,7 @@ const dateScalar = new GraphQLScalarType({
   parseValue(value) {
     return new Date(value);
   },
-  parseLiteral(ast) {
+  parseLiteral(ast) { 
     if (ast.kind === Kind.STRING) {
       return new Date(ast.value);
     }
