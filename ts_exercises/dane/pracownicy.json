@@ -1,0 +1,55 @@
+[
+  {
+    "id": 1,
+    "imie": "Mireczek",
+    "nazwisko": "Prezes",
+    "stanowisko": "szef",
+    "pensja": [500000, 2],
+    "pseudonim": "SZEFU",
+    "opis": "Nieobecny, zawsze na spotkaniach, zawsze na urlopie. Zarabia najwięcej w firmie, ale co miesiąc musi dokładać do interesu. Uwielbia podejmować decyzje, których nikt nie rozumie. Twierdzi, że podczas urlopów 'przybywa w delegację do rzeczywistości'. Był karany."
+  },
+  {
+    "id": 2,
+    "imie": "Anetka",
+    "nazwisko": "Prezesolnik",
+    "stanowisko": "anetka",
+    "pensja": [300, 0],
+    "pseudonim": "Brak",
+    "opis": "Najmłodsza (poza Tobą) w firmie. Zawsze na spotkaniach (z Panem Prezesem) i na urlopie (z Panem Prezesem). Zarabia ledwie na waciki. Nikt nie wie, czym się zajmuje, ale jako jedyna nie jest na umowie śmieciowej."
+  },
+  {
+    "id": 3,
+    "imie": "Marek",
+    "nazwisko": "Prezesolnik",
+    "stanowisko": "podbutnik",
+    "pensja": [6000, 0],
+    "pseudonim": "Marek",
+    "opis": "Zawsze uśmiechnięty, twierdzi, że 'wszystko będzie w porządku', ale nigdy nie mówi kiedy. Z biura Marka dobiega dźwięk modemu z lat 90. Jego głównym zadaniem jest chodzenie po biurze. Mówi, że zarządza 'strategią nierządu zarządu'. Zawsze ma najnowszy raport, nawet jeśli jeszcze go nie stworzył."
+  },
+  {
+    "id": 4,
+    "imie": "Zofia",
+    "nazwisko": "REDACTED",
+    "stanowisko": "podbutnik",
+    "pensja": [4500, 1],
+    "pseudonim": "Rambo",
+    "opis": "Codziennie sprawdza, czy klamki są na swoich miejscach i pilnuje, żeby każdy 'był w gotowości'. Wiecznie czuwa na wypadek, gdyby nadszedł **TEN DZIEŃ**. Zofia to człowiek-legenda w dziedzinie zabezpieczeń biurowych."
+  },
+  {
+    "imie": "Owocowe Czwartki",
+    "rasa": "Owczarek Kaszubski",
+    "isPies": true,
+    "wiek": {
+      "wLudzkich": 3,
+      "wPsich": 21,
+      "mentalnie": 0
+    },
+    "nienawidzi": [
+      "policji",
+      "kota",
+      "papieru toaletowego",
+      "autorytetów",
+      "mieć czysto"
+    ]
+  }
+]

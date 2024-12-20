@@ -27,13 +27,13 @@ const expenses = [
 const dateScalar = new GraphQLScalarType({
   name: 'Date',
   description: 'Custom scalar for dates',
-  serialize(value) {
+  serialize(value) { //ona dziala tak ze wysyla informacje z serwer do foratu dla klienta
     return value;
   },
-  parseValue(value) {
+  parseValue(value) { //ona dziala tak ze pobiera informacje z klienta do serwera w zmiennej do formatu używanego na serwerze.
     return new Date(value);
   },
-  parseLiteral(ast) { 
+  parseLiteral(ast) {  //ona dziala tak ze pobiera informacje z klienta do serwera w treści zapytania lub mutacji (jako literały), a nie w zmiennych.
     if (ast.kind === Kind.STRING) {
       return new Date(ast.value);
     }
